@@ -1,0 +1,68 @@
+# FastAgent 敏感和配置文件
+fastagent.secrets.yaml
+*.log
+logs/
+.DS_Store
+.cache-directory/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+.env
+.venv
+env/
+venv/
+ENV/
+.env311/
+.venv311/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# MCP 相关文件
+mcp-cache/
+.mcp/
+.mcp-cache/
+
+# 数据文件
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Docker相关
+.docker/
+docker-compose.override.yml
+
+# 临时文件
+temp/
+tmp/
+*.tmp
+
+# 个人配置文件
+*.local.yaml
+*.local.yml
+local_config.yaml

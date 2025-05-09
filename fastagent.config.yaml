@@ -1,0 +1,51 @@
+# FastAgent Configuration File
+
+# Default Model Configuration:
+# 
+# Takes format:
+#   <provider>.<model_string>.<reasoning_effort?> (e.g. anthropic.claude-3-5-sonnet-20241022 or openai.o3-mini.low)
+# Accepts aliases for Anthropic Models: haiku, haiku3, sonnet, sonnet35, opus, opus3
+# and OpenAI Models: gpt-4.1, gpt-4.1-mini, o1, o1-mini, o3-mini
+#
+# If not specified, defaults to "haiku". 
+# Can be overriden with a command line switch --model=<model>, or within the Agent constructor.
+
+default_api: deepseek
+default_model: deepseek-chat
+
+apis:
+  deepseek:
+    protocol: http
+    api_key_env: DEEPSEEK_API_KEY
+    base_url: "https://api.deepseek.com/v1"
+
+clients:
+  default:
+    api: deepseek
+    model: "deepseek-chat"
+
+# Logging and Console Configuration:
+logger:
+    # level: "debug" | "info" | "warning" | "error"
+    # type: "none" | "console" | "file" | "http"
+    # path: "/path/to/logfile.jsonl"
+
+    # 开启或关闭进度显示
+    progress_display: false  # 关闭进度条
+
+    # 在控制台显示聊天用户/助手消息
+    show_chat: true  # 关闭聊天消息显示
+    # 在控制台显示工具调用
+    show_tools: true  # 关闭工具调用显示
+    # 在控制台截断长工具响应true
+    truncate_tools: true
+
+# MCP Servers
+mcp:
+    servers:
+        fetch:
+            command: "docker"
+            args: ["run", "-i", "--rm", "mcp/fetch"]
+        context7:
+            command: "npx"
+            args: ["-y", "@upstash/context7-mcp@latest"]
