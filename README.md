@@ -14,7 +14,7 @@
 
 ## 系统要求
 
-- Python 3.8+
+- Python 3.10+
 - Windows 10/11 或 WSL2
 - Docker (用于运行 MCP 服务器)
 - Node.js 16+ 和 NPM 7+ (用于前端和 context7 MCP 服务器)
