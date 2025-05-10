@@ -34,10 +34,12 @@ logger:
     progress_display: false  # 关闭进度条
 
     # 在控制台显示聊天用户/助手消息
-    show_chat: true  # 关闭聊天消息显示
+    show_chat: true  # 显示聊天消息
+
     # 在控制台显示工具调用
-    show_tools: true  # 关闭工具调用显示
-    # 在控制台截断长工具响应true
+    show_tools: true  # 显示工具调用
+
+    # 在控制台截断长工具响应
     truncate_tools: true
 
 # MCP Servers

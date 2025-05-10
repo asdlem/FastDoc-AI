@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 创建Axios实例
 const api = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: 'http://localhost:8000',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -42,13 +42,10 @@ export const sendMessage = async (message, conversationId = null) => {
 
 // 获取对话历史 (模拟，因为后端API可能不支持)
 export const getConversations = async () => {
-  try {
+
     // 模拟API响应
     return [];
-  } catch (error) {
-    console.error('获取对话历史错误:', error);
-    throw error;
-  }
+ 
 };
 
 // 获取特定对话的消息 (模拟，因为后端API可能不支持)

@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+当需要使用fast-agent框架总是是优先查询位置在 D:\Java\py\FastAgent\fast-agent-doc.md 的官方文档以生成更加正确的结果

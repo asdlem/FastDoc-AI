@@ -4,6 +4,7 @@ fastagent.secrets.yaml
 logs/
 .DS_Store
 .cache-directory/
+fast-agent/
 
 # Python
 __pycache__/
