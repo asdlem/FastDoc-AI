@@ -1,245 +1,245 @@
-# AI文档助手
+# FastAgent
 
-这是一个基于 fast-agent 和 FastAPI 构建的高性能 AI 代理 Web 服务，提供了一个简洁易用的 RESTful API 接口，使用 Model Completion Protocol (MCP) 实现了强大的 AI 文档助手功能。本项目专为需要快速集成大语言模型功能的应用设计，解决了传统实现中的异步处理问题。
+<div align="center">
+  <p>
+    <em>现代化AI技术助手 - 基于大型语言模型的问答系统</em>
+  </p>
+  <p>
+    <a href="#主要特性">主要特性</a> •
+    <a href="#快速开始">快速开始</a> •
+    <a href="#系统架构">系统架构</a> •
+    <a href="#安装指南">安装指南</a> •
+    <a href="#使用方法">使用方法</a> •
+    <a href="#文档">文档</a> •
+    <a href="#常见问题">常见问题</a>
+  </p>
+</div>
 
-## 特性
+## 项目简介
 
-- **强大的 AI 代理**: 基于 fast-agent 框架，支持复杂的多工具交互
-- **RESTful API**: 简洁的 API 设计，易于集成到各种应用场景
-- **MCP 工具支持**: 内置 fetch 和 context7 工具，提供强大的网页抓取和文档查询能力
-- **高性能异步处理**: 使用 FastAPI 和 Uvicorn，原生支持异步操作
-- **自动 URL 处理**: 自动检测并解析查询中的 URL，增强响应质量
-- **结构化响应**: 返回清晰格式化的 Markdown 响应，便于前端展示
-- **现代化 UI 界面**: 提供基于 React 和 Material UI 的 Google 风格聊天界面
+FastAgent是一个基于FastAPI和MCP(Model Call Protocol)框架构建的AI技术助手系统。它能够利用大型语言模型(LLMs)的强大能力，为用户提供专业的技术问题解答、代码分析与编写帮助，以及智能文档生成等功能。
 
-## 系统要求
+本项目采用前后端分离的架构，后端基于Python FastAPI构建RESTful API服务，前端使用Next.js和React打造现代化的用户界面，通过MCP框架与各种大型语言模型无缝集成。
 
-- Python 3.10+
-- Windows 10/11 或 WSL2
-- Docker (用于运行 MCP 服务器)
-- Node.js 16+ 和 NPM 7+ (用于前端和 context7 MCP 服务器)
+## 主要特性
 
-## 安装
+🚀 **强大的AI能力**
+- 集成MCP框架接入先进大型语言模型
+- 专业的技术问题解答与代码分析
+- 智能文档生成与知识库查询
 
-### 创建虚拟环境
+💻 **现代化用户界面**
+- 响应式设计，适配各种设备
+- 简洁直观的对话式交互
+- Markdown格式支持，代码语法高亮
 
-```powershell
-# 创建虚拟环境
-python -m venv venv
+🔒 **安全与可靠**
+- 多用户认证和权限管理
+- 会话隔离与数据持久化
+- 完整的错误处理和日志记录
 
-# 激活虚拟环境
-# 错误示例（Linux/macOS风格）
-# source venv/bin/activate
-
-# 正确示例（Windows PowerShell）
-.\venv\Scripts\Activate.ps1
-```
-
-### 安装依赖
-
-```powershell
-# 后端依赖
-pip install -r requirements.txt
-
-# 前端依赖
-cd frontend
-npm install
-cd ..
-```
-
-## 配置
-
-### 配置文件
-
-项目使用以下两个主要配置文件：
-
-1. **fastagent.config.yaml** - 主配置文件
-2. **fastagent.secrets.yaml** - 敏感信息配置文件（需要自行创建）
-
-#### fastagent.secrets.yaml 示例
-
-```yaml
-# FastAgent Secrets Configuration
-# WARNING: 保持此文件安全并且永远不要提交到版本控制系统
-
-# 可以设置API密钥
-openai:
-    api_key: <your-openai-api-key-here>
-anthropic:
-    api_key: <your-anthropic-api-key-here>
-deepseek:
-    api_key: <your-deepseek-api-key-here>
-openrouter:
-    api_key: <your-openrouter-api-key-here>
-
-# MCP服务器环境变量
-mcp:
-    servers:
-        brave:
-            env:
-                BRAVE_API_KEY: <your_brave_api_key_here>
-```
-
-#### fastagent.config.yaml 示例
-
-```yaml
-default_api: deepseek
-default_model: deepseek-chat
-
-apis:
-  deepseek:
-    protocol: http
-    api_key_env: DEEPSEEK_API_KEY
-    base_url: "https://api.deepseek.com/v1"
-
-clients:
-  default:
-    api: deepseek
-    model: "deepseek-chat"
-
-logger:
-    progress_display: false  # 关闭进度条
-    show_chat: true  # 显示聊天消息
-    show_tools: true  # 显示工具调用
-    truncate_tools: true  # 截断长工具响应
-
-# MCP Servers
-mcp:
-    servers:
-        fetch:
-            command: "docker"
-            args: ["run", "-i", "--rm", "mcp/fetch"]
-        context7:
-            command: "npx"
-            args: ["-y", "@upstash/context7-mcp@latest"]
-```
-
-### MCP 环境要求
-
-本项目使用 Model Completion Protocol (MCP) 服务器扩展 AI 代理功能：
-
-1. **Docker 环境**：
-   - 安装 Docker Desktop 或 Docker Engine
-   - 拉取所需容器：`docker pull mcp/fetch`
-
-2. **Node.js 环境**：
-   - 安装 Node.js 和 NPM
-   - 用于运行 context7 MCP 服务器
-
-3. **权限与网络**：
-   - Docker 需要足够的权限运行容器
-   - 确保网络访问权限（用于fetch和context7等MCP服务）
+🔌 **可扩展性**
+- 模块化设计，易于扩展
+- 支持多种大型语言模型的集成
+- 可配置的系统提示词和参数
 
 ## 快速开始
 
-### 1. 创建配置文件
+### 系统要求
 
-在项目根目录创建 `fastagent.secrets.yaml` 并配置您的API密钥
+- **操作系统**: Windows 10/11
+- **后端**: Python 3.9+
+- **前端**: Node.js 18.0+
+- **浏览器**: 现代浏览器 (Chrome, Firefox, Edge等)
 
-### 2. 启动后端服务
+### 一键安装与启动
 
-```powershell
-# 错误示例（Linux风格）
-# python app.py &
-
-# 正确示例（Windows PowerShell）
-python fastapp.py
-```
-
-后端服务将在 `http://localhost:5000` 启动
-
-### 3. 启动前端服务
+使用以下命令快速启动FastAgent系统:
 
 ```powershell
-# 进入前端目录
-cd frontend
+# 克隆仓库（如果尚未克隆）
+git clone https://github.com/yourusername/FastAgent.git
+cd FastAgent
 
-# 开发模式启动
-npm run dev
-
-# 如果需要构建生产版本
-# npm run build
-# npm run preview
+# 安装并启动全部服务
+start-all.bat
 ```
 
-前端应用将在 `http://localhost:3000` 启动
+成功启动后，浏览器将自动打开 http://localhost:3000，显示登录页面。
 
-### 4. API 使用示例
+## 系统架构
 
-```powershell
-$headers = @{
-    "Content-Type" = "application/json"
-}
-
-$body = @{
-    "query" = "如何使用Python实现异步函数？"
-} | ConvertTo-Json
-
-Invoke-RestMethod -Uri "http://localhost:5000/query" -Method Post -Headers $headers -Body $body
-```
-
-### 5. URL 引用功能
-
-可以在查询中包含URL，系统会自动处理：
-
-```powershell
-$body = @{
-    "query" = "分析这篇文章的主要观点 @https://example.com/article"
-} | ConvertTo-Json
-
-Invoke-RestMethod -Uri "http://localhost:5000/query" -Method Post -Headers $headers -Body $body
-```
-
-## 项目结构
+FastAgent采用前后端分离的现代化架构:
 
 ```
-FastAgent/
-│
-├── fastapp.py                   # 后端主应用入口
-├── requirements.txt             # 后端项目依赖
-├── README.md                    # 项目说明
-├── fastagent.config.yaml        # MCP服务器配置
-├── fastagent.secrets.yaml       # API密钥配置（不提交到Git）
-└── frontend/                    # 前端项目目录
-    ├── src/                     # 前端源代码
-    │   ├── api/                 # API请求服务
-    │   ├── components/          # 可复用组件
-    │   ├── context/             # React上下文
-    │   ├── pages/               # 页面组件 
-    │   ├── styles/              # CSS样式
-    │   └── utils/               # 工具函数
-    ├── public/                  # 静态资源
-    ├── package.json             # 前端依赖配置
-    └── vite.config.js           # Vite配置
+┌────────────────┐      HTTP      ┌────────────────┐
+│                │◄──────────────►│                │
+│  前端应用      │                │  后端API服务   │
+│  (Next.js)     │                │  (FastAPI)     │
+│                │                │                │
+└────────────────┘                └───────┬────────┘
+                                          │
+                                          │ HTTP/SSE
+                                          ▼
+                               ┌────────────────────┐
+                               │                    │
+                               │  大型语言模型服务  │
+                               │  (MCP协议)         │
+                               │                    │
+                               └────────────────────┘
 ```
 
-## 前端功能
+更多架构详情请参考[架构文档](docs/ARCHITECTURE.md)。
 
-- **Google风格UI**: 采用Modern Material Design风格的用户界面
-- **响应式设计**: 适配桌面和移动设备的布局
-- **MD渲染**: 支持Markdown渲染和代码语法高亮
-- **会话管理**: 侧边栏历史对话列表和新会话创建
-- **实时反馈**: 加载状态指示和错误处理
-- **URL集成**: 支持提交带URL的查询并获取分析结果
+## 安装指南
+
+### 自动安装（推荐）
+
+FastAgent提供了多个自动化脚本，简化安装过程：
+
+1. **完整安装**
+   ```powershell
+   setup.bat       # 后端环境设置
+   build-frontend.bat  # 前端依赖安装
+   ```
+
+2. **分步安装**
+   ```powershell
+   # 1. 设置后端环境
+   setup.bat
+   
+   # 2. 安装前端依赖
+   build-frontend.bat
+   ```
+
+### 手动安装
+
+如果自动脚本无法正常工作，可按照以下步骤手动安装：
+
+1. **设置Python环境**
+   ```powershell
+   python -m venv .venv311
+   .venv311\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+2. **设置前端环境**
+   ```powershell
+   cd v0-frontend
+   npm install --legacy-peer-deps
+   cd ..
+   ```
+
+3. **配置文件设置**
+   - 创建`fastagent.config.yaml`和`fastagent.secrets.yaml`文件
+   - 参考`docs/INSTALLATION_GUIDE.md`中的配置说明
+
+详细安装步骤请参考[安装指南](docs/INSTALLATION_GUIDE.md)。
+
+## 使用方法
+
+### 启动服务
+
+1. **使用一键启动脚本（推荐）**
+   ```powershell
+   start-all.bat
+   ```
+
+2. **分别启动服务**
+   ```powershell
+   start.bat           # 启动后端服务
+   start-frontend.bat  # 启动前端服务
+   ```
+
+### 基本使用流程
+
+1. 访问 http://localhost:3000
+2. 使用默认账户登录（用户名: admin，密码: admin123）
+3. 创建新的会话或选择现有会话
+4. 在对话框中输入技术问题
+5. 等待系统生成回答
+
+### API使用
+
+FastAgent提供了完整的RESTful API，可通过以下步骤使用：
+
+1. 获取认证Token
+   ```
+   POST /api/users/token
+   ```
+
+2. 创建会话
+   ```
+   POST /api/sessions/
+   ```
+
+3. 发送查询
+   ```
+   POST /api/sessions/query
+   ```
+
+详细API文档请参考[API参考文档](docs/API_REFERENCE.md)。
+
+## 文档
+
+FastAgent提供了全面的文档，帮助您更好地使用和开发系统：
+
+- [安装指南](docs/INSTALLATION_GUIDE.md) - 详细的安装和配置说明
+- [API参考文档](docs/API_REFERENCE.md) - 完整的API端点与使用示例
+- [系统架构](docs/ARCHITECTURE.md) - 系统架构与组件说明
+- [故障排除](docs/TROUBLESHOOTING.md) - 常见问题解决方案
 
 ## 常见问题
 
-### Q: 应用启动时出现"event loop is already running"错误？
-A: 确保使用最新版本的 fast-agent 库，该版本已处理事件循环问题。
+### 无法启动服务怎么办？
 
-### Q: 如何修改监听端口？
-A: 编辑 fastapp.py 文件中的 uvicorn.run 参数。
+检查端口占用情况，确保8002（后端）和3000（前端）端口未被占用。可以使用以下命令检查：
 
-### Q: 前端无法连接到后端API？
-A: 检查frontend/src/config.js中的API_BASE_URL配置是否与后端服务地址一致。
+```powershell
+netstat -ano | findstr :8002
+netstat -ano | findstr :3000
+```
 
-### Q: MCP服务器启动失败？
-A: 检查相应的环境是否已安装（Docker或Node.js）以及网络连接是否正常。
+如需更多帮助，请参考[故障排除指南](docs/TROUBLESHOOTING.md)。
+
+### 如何配置API密钥?
+
+编辑`fastagent.secrets.yaml`文件，添加您的API密钥：
+
+```yaml
+deepseek:
+    api_key: "YOUR_API_KEY_HERE"
+```
+
+### 如何自定义系统提示词?
+
+系统提示词定义在`app/services/agent_service.py`文件中，可根据需要修改。
 
 ## 贡献指南
 
-欢迎提交 Pull Request 或创建 Issue 来改进项目。
+我们欢迎各种形式的贡献，包括但不限于:
+
+- 提交Bug报告和功能请求
+- 改进文档和示例
+- 提交代码改进和新功能
 
 ## 许可证
 
-[MIT](https://choosealicense.com/licenses/mit/) 
+本项目采用MIT许可证 - 详见LICENSE文件。
+
+## 致谢
+
+FastAgent的开发得益于以下开源项目:
+
+- [FastAPI](https://fastapi.tiangolo.com/) - 现代化的Python Web框架
+- [Next.js](https://nextjs.org/) - React前端框架
+- [MCP](https://github.com/mcp) - Model Call Protocol框架
+- [SQLAlchemy](https://www.sqlalchemy.org/) - Python SQL工具包和ORM
+
+---
+
+<div align="center">
+  <p>
+    <sub>Made with ❤️ by FastAgent团队</sub>
+  </p>
+</div> 
