@@ -58,7 +58,7 @@ FastAgent是一个基于FastAPI和MCP(Model Call Protocol)框架构建的AI技�
 
 ```powershell
 # 克隆仓库（如果尚未克隆）
-git clone https://github.com/yourusername/FastAgent.git
+git clone https://github.com/asdlem/FastDoc-AI.git
 cd FastAgent
 
 # 安装并启动全部服务
